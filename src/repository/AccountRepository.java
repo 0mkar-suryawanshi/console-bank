@@ -1,19 +1,26 @@
 package repository;
+
 import domain.Account;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 public class AccountRepository {
 	private final Map<String, Account> accountByNumber = new HashMap<>();
 
 	public void save(Account account) {
-		accountByNumber.put(account.getAccountNumber(),account);
+		accountByNumber.put(account.getAccountNumber(), account);
 	}
 
 	public List<Account> findAll() {
-		
+
 		return new ArrayList<>(accountByNumber.values());
+	}
+
+	public Optional<Account> findByNumber(String accountNumber) {
+		return Optional.ofNullable(accountByNumber.get(accountNumber));
 	}
 
 }

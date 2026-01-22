@@ -31,10 +31,10 @@ public class Main {
 		        openAccount(sc, bankService);
 		        break;
 		    case "2":
-		        deposit(sc);
+		        deposit(sc,bankService);
 		        break;
 		    case "3":
-		        withdraw(sc);
+		        withdraw(sc, bankService);
 		        break;
 		    case "4":
 		        transfer(sc);
@@ -73,18 +73,27 @@ public class Main {
 
 		String accountNumber = bankService.openAccount(name, email, accountType, initial);
 		if(initial>0)
-			bankService.deposit();
+			bankService.deposit(accountNumber,initial,"Initial Deposit");
 		System.out.println("Account opened: "+ accountNumber);
 	}
 
-	private static void deposit(Scanner sc) {
+	private static void deposit(Scanner sc, BankService bankService) {
 		System.out.println("Account number: ");
+		String accountNumber = sc.nextLine().trim();
 		System.out.println("Amount: ");
+		Double amount = Double.valueOf(sc.nextLine().trim());
+		bankService.deposit(accountNumber, amount, "Deposit");
+		System.out.println("Deposited");
 
 	}
 
-	private static void withdraw(Scanner sc) {
-		// TODO Auto-generated method stub
+	private static void withdraw(Scanner sc, BankService bankService) {
+		System.out.println("Account number: ");
+		String accountNumber = sc.nextLine().trim();
+		System.out.println("Amount: ");
+		Double amount = Double.valueOf(sc.nextLine().trim());
+		bankService.withdrawn(accountNumber, amount, "Withdrawn");
+		System.out.println("Withdrawn");
 
 	}
 
