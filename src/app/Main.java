@@ -11,7 +11,9 @@ public class Main {
 		BankService bankService = new BankServiceImpl();
 		boolean running = true;
 		while (running) {
+			System.out.println("=========================================");
 			System.out.println("Welcome to Console Bank");
+			System.out.println("=========================================");
 			System.out.println("""
 					1) Open Account
 					2) Deposit
@@ -24,7 +26,7 @@ public class Main {
 					""");
 			System.out.print("CHOICE => ");
 			String choice = sc.nextLine().trim();
-			System.out.println("CHOICE : " + choice);
+			System.out.println("-------------------------");
 
 			switch (choice) {
 		    case "1":
@@ -37,16 +39,16 @@ public class Main {
 		        withdraw(sc, bankService);
 		        break;
 		    case "4":
-		        transfer(sc);
+		        transfer(sc, bankService);
 		        break;
 		    case "5":
-		        statement(sc);
+		        statement(sc, bankService);
 		        break;
 		    case "6":
 		        listAccount(sc, bankService);
 		        break;
 		    case "7":
-		        searchAccounts(sc);
+		        searchAccounts(sc, bankService);
 		        break;
 		    case "8":
 		        running = false;
@@ -97,27 +99,49 @@ public class Main {
 
 	}
 
-	private static void transfer(Scanner sc) {
-		// TODO Auto-generated method stub
+	private static void transfer(Scanner sc, BankService bankService) {
+		System.out.println("From Account: ");
+		String from = sc.nextLine().trim();
+		System.out.println("To Account ");
+		String to = sc.nextLine().trim();
+		System.out.println("Amount: ");
+		Double amount = Double.valueOf(sc.nextLine().trim());
+		bankService.transfer(from, to,  amount, "Transfer");
 
 	}
 
-	private static void statement(Scanner sc) {
-		// TODO Auto-generated method stub
+	private static void statement(Scanner sc, BankService bankService) {
+		System.out.println("Account number: ");
+		String account = sc.nextLine().trim();
+		bankService.getStatement(account).forEach(t ->{
+			System.out.println("----------------------------------------------------------------------");
+			System.out.println("|"+t.getTimeStamp()+" | "+t.getType()+" | "+t.getAmount()+" | "+t.getNote()+"|");
+			System.out.println("----------------------------------------------------------------------");
 
+		});
 	}
 
 	private static void listAccount(Scanner sc, BankService bankService) {
 		
 		bankService.listAccount().forEach(a -> {
-			System.out.println(a.getAccountNumber() + "|"+a.getAccountType()+"|"+a.getBalance());
+			System.out.println("-------------------------------------------------------------");
+			System.out.println("|"+a.getAccountNumber() + " | "+a.getAccountType()+" | "+a.getBalance()+"|");
+			System.out.println("-------------------------------------------------------------");
 		});
 
 	}
 
-	private static void searchAccounts(Scanner sc) {
-		// TODO Auto-generated method stub
-
+	private static void searchAccounts(Scanner sc, BankService bankService) {
+		
+		System.out.println("Customer name contains: ");
+		String q = sc.nextLine().trim();
+		bankService.searchAccountsByCustomerName(q).forEach(account ->{
+			System.out.println("---------------------------------------------------------------------------------------");
+			System.out.println(account.getAccountNumber()+" | "+account.getAccountType()+" | "+account.getBalance()+" |");
+			System.out.println("---------------------------------------------------------------------------------------");
+		});
+		
+		
 	}
 
 }
